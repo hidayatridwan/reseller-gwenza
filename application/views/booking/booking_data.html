@@ -1,0 +1,687 @@
+{% extends 'layout.html' %} {% block content %}
+
+<div class="card card-outline card-success">
+  <div class="card-header">
+    <div class="form-group row">
+      <label for="kode" class="col-sm-1 col-form-label">Periode</label>
+      <div class="col-sm-2">
+        <input
+          type="date"
+          name="date_start"
+          id="date_start"
+          value="{{ now|date('Y-m-01') }}"
+        />
+      </div>
+      <div class="col-sm-9">
+        <input
+          type="date"
+          name="date_end"
+          id="date_end"
+          value="{{ now|date('Y-m-t') }}"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <table
+      width="100%"
+      id="dt_main"
+      class="table table-sm table-bordered table-responsive table-striped"
+    >
+      <thead>
+        <th>No</th>
+
+        <th>ID</th>
+
+        <th>Tanggal</th>
+
+        <th>Kode Reseller</th>
+
+        <th>Nama Reseller</th>
+
+        <th>Nama Customer</th>
+
+        <th>Alamat</th>
+
+        <th>No HP</th>
+
+        <th>Grand Total</th>
+
+        <th>Kurir</th>
+
+        <th>No Resi</th>
+
+        <th>Keterangan</th>
+
+        <th>Status</th>
+
+        <th>Proses</th>
+      </thead>
+
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- /.card-body -->
+</div>
+
+<!-- /.card -->
+
+<!-- Modal -->
+
+<div class="modal fade" id="modal_main">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Booking Detail</h4>
+
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form id="frm_main" class="form-horizontal">
+          <div class="form-group row">
+            <label for="kode" class="col-sm-3 col-form-label"
+              >ID / Tgl trans</label
+            >
+
+            <div class="col-sm-4">
+              <input
+                type="text"
+                id="kode"
+                name="kode"
+                class="form-control form-control-sm"
+                readonly
+              />
+            </div>
+
+            <div class="col-sm-5">
+              <input
+                type="text"
+                id="tgl_trans"
+                name="tgl_trans"
+                class="form-control form-control-sm"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="nama" class="col-sm-3 col-form-label">Reseller</label>
+
+            <div class="col-sm-4">
+              <input
+                type="text"
+                id="kode_reseller"
+                name="kode_reseller"
+                class="form-control form-control-sm"
+                readonly
+              />
+            </div>
+
+            <div class="col-sm-5">
+              <input
+                type="text"
+                id="nama_reseller"
+                name="nama_reseller"
+                class="form-control form-control-sm"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="nama" class="col-sm-3 col-form-label">Customer</label>
+
+            <div class="col-sm-4">
+              <input
+                type="text"
+                id="nama"
+                name="nama"
+                class="form-control form-control-sm"
+                readonly
+              />
+            </div>
+
+            <div class="col-sm-5">
+              <input
+                type="text"
+                id="nohp"
+                name="nohp"
+                class="form-control form-control-sm"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="nama" class="col-sm-3 col-form-label">Alamat</label>
+
+            <div class="col-sm-9">
+              <input
+                type="text"
+                id="alamat"
+                name="alamat"
+                class="form-control form-control-sm"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="bukti_trf" class="col-sm-3 col-form-label"
+              >Bukti Transfer</label
+            >
+
+            <div class="col-sm-9">
+              <input type="file" id="bukti_trf" name="bukti_trf" />
+
+              <input
+                type="hidden"
+                id="bukti_trf_hidden"
+                name="bukti_trf_hidden"
+              />
+
+              <a id="bukti_trf_link"></a>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="kurir" class="col-sm-3 col-form-label"
+              >Kurir / No resi</label
+            >
+
+            <div class="col-sm-4">
+              <input
+                type="text"
+                id="kurir"
+                name="kurir"
+                placeholder="Ex. JNE, J&T, POS"
+                class="form-control form-control-sm"
+              />
+            </div>
+
+            <div class="col-sm-5">
+              <input
+                type="text"
+                id="noresi"
+                name="noresi"
+                class="form-control form-control-sm"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="keterangan" class="col-sm-3 col-form-label"
+              >Keterangan</label
+            >
+
+            <div class="col-sm-9">
+              <input
+                type="text"
+                id="keterangan"
+                name="keterangan"
+                class="form-control form-control-sm"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="produk" class="col-sm-3 col-form-label">Produk</label>
+
+            <div class="col-sm-9">
+              <table
+                width="100%"
+                id="dt_produk"
+                class="table table-sm table-bordered table-striped"
+              >
+                <thead>
+                  <th>Produk</th>
+
+                  <th>Model</th>
+
+                  <th>Size</th>
+
+                  <th class="text-right">Qty</th>
+
+                  <th class="text-right">Harga</th>
+
+                  <th class="text-right">Total</th>
+                </thead>
+
+                <tbody></tbody>
+
+                <tfoot></tfoot>
+              </table>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="nama" class="col-sm-3 col-form-label">Status</label>
+
+            <div class="col-sm-9">
+              <select
+                id="status"
+                name="status"
+                class="form-control form-control-sm"
+              >
+                <option value="Pending">Pending</option>
+
+                <!--<option value="Batal">Batal</option>-->
+
+                <!--<option value="Reject">Reject</option>-->
+
+                <option value="Transfer">Transfer</option>
+
+                <option value="Proses">Proses</option>
+
+                <option value="Kirim">Kirim</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer justify-content-between">
+        <button
+          type="button"
+          class="btn btn-sm btn-default"
+          data-dismiss="modal"
+        >
+          Tutup
+        </button>
+
+        <button type="button" id="btn_save" class="btn btn-sm btn-primary">
+          Proses Kirim
+        </button>
+      </div>
+    </div>
+
+    <!-- /.modal-content -->
+  </div>
+
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- /.modal -->
+
+{% endblock %} {% block js%}
+
+<script>
+  const role = "{{ auth.role }}";
+
+  const nf = new Intl.NumberFormat();
+
+  $(document).ready(function () {
+    if (role == "Reseller") {
+      $("#noresi").prop("readonly", true);
+
+      $("#status").prop("disabled", true);
+
+      $("#btn_save").text("Simpan");
+    } else {
+      $("#keterangan").prop("readonly", true);
+      $("#bukti_trf").addClass("d-none");
+    }
+  });
+
+  // get all booking
+
+  const data_table = $("#dt_main").DataTable({
+    searching: true,
+
+    lengthChange: false,
+
+    processing: true,
+
+    ordering: false,
+
+    responsive: true,
+
+    ajax: {
+      url: `${BASE_URL}data_booking`,
+
+      type: "post",
+      data: (obj) => {
+        (obj.date_start = $("#date_start").val()),
+          (obj.date_end = $("#date_end").val());
+      },
+    },
+
+    pageLength: 10,
+
+    columnDefs: [
+      {
+        targets: [0, 13],
+
+        className: "text-center",
+
+        searchable: false,
+      },
+
+      {
+        targets: [8],
+
+        className: "text-right",
+
+        render: function (data, type, row) {
+          return nf.format(data);
+        },
+      },
+    ],
+
+    lengthMenu: [
+      [10, 25, 50, 100, -1],
+
+      [10, 25, 50, 100, "All"],
+    ],
+
+    dom: "Bfrtip",
+
+    buttons: ["csv", "excel", "pageLength"],
+
+    pageLength: 10,
+  });
+
+  $("#date_start").change(function () {
+    data_table.ajax.reload();
+  });
+
+  $("#date_end").change(function () {
+    data_table.ajax.reload();
+  });
+
+  // view booking detail
+
+  $("#dt_main").on("click", ".btn-edit", function () {
+    $("#frm_main")[0].reset();
+    $("#modal_main").modal("show");
+
+    const kode = $(this).data("kode");
+
+    $("#dt_produk tbody").empty();
+
+    $("#dt_produk tfoot").empty();
+
+    $(".modal-title").text("Booking detail " + kode);
+
+    const formData = new FormData();
+
+    formData.append("kode", kode);
+
+    fetch(`${BASE_URL}get_booking_one`, {
+      method: "post",
+
+      body: formData,
+    })
+      .then((response) => response.json())
+
+      .then((result) => {
+        // add custom object
+
+        const custom_object = {
+          bukti_trf_hidden: result.bukti_trf,
+        };
+
+        delete result.bukti_trf;
+
+        Object.assign(result, custom_object);
+
+        // append to elements by object id
+
+        for (const [key, value] of Object.entries(result)) {
+          const element = document.getElementById(key);
+
+          if (element !== undefined && element !== null) {
+            element.value = value;
+          }
+        }
+
+        $("#bukti_trf_link").prop(
+          "href",
+          `${BASE_URL}uploads/transfer/${result.bukti_trf_hidden}`
+        );
+
+        $("#bukti_trf_link").prop("target", "_blank");
+
+        $("#bukti_trf_link").text(result.bukti_trf_hidden);
+
+        // detail
+
+        let grand_total = 0;
+
+        let qty_total = 0;
+
+        result.detail.forEach((v) => {
+          const gambar = BASE_URL + "uploads/produk/" + $("#temp_gambar").val();
+
+          grand_total += parseFloat(v.total);
+
+          qty_total += parseFloat(v.qty_size);
+
+          let tr = `<tr>
+
+      <td>${v.nama_produk}</td>
+
+      <td>${v.model}</td>
+
+      <td>${
+        v.size == "Dewasa"
+          ? "Dewasa (XL)"
+          : v.size == "DewasaL"
+          ? "Dewasa (L)"
+          : v.size
+      }</td>
+
+      <td class="text-right">${v.qty_size}</td>
+
+      <td class="text-right">${nf.format(v.harga)}</td>
+
+      <td class="text-right">${nf.format(v.total)}</td>
+
+      </tr>`;
+
+          $("#dt_produk tbody").append(tr);
+        });
+
+        let el_harga_potongan = ``;
+
+        if (role == "Admin") {
+          el_harga_potongan = `<input type="number" id="harga_potongan" name="harga_potongan" value="${result.harga_potongan}" class="form-control form-control-sm">`;
+        } else {
+          el_harga_potongan = `<input type="hidden" id="harga_potongan" name="harga_potongan" value="${
+            result.harga_potongan
+          }">${nf.format(result.harga_potongan)}`;
+        }
+
+        let th = `<tr>
+
+      <th colspan="3">Grand Total</th>
+
+      <th class="text-right">${qty_total}<input type="hidden" id="qty_total" value="${qty_total}"></th>
+
+      <th></th>
+
+      <th class="text-right">RP ${nf.format(
+        grand_total
+      )}<input type="hidden" id="grand_total" value="${grand_total}"></th>
+
+      </tr>
+
+      <tr>
+
+      <th colspan="3">Ada Potongan?</th>
+
+      <th class="text-right">${el_harga_potongan}<input type="hidden" id="total_potongan"></th>
+
+      <th class="text-right total-potongan"></th>
+
+      <th class="text-right grand-total-potongan"></th>
+
+      </tr>`;
+
+        $("#dt_produk tfoot").append(th);
+
+        $("#harga_potongan").trigger("change");
+      })
+
+      .catch((error) => toastr.error(error));
+  });
+
+  $("#dt_produk tfoot").on(
+    "keyup change click",
+    "#harga_potongan",
+    function () {
+      const qty_total = parseFloat($("#qty_total").val());
+
+      const harga_potongan = parseFloat($(this).val());
+
+      const total_potongan = isNaN(qty_total * harga_potongan)
+        ? 0
+        : qty_total * harga_potongan;
+
+      $(".total-potongan").text(nf.format(total_potongan));
+
+      $("#total_potongan").val(total_potongan);
+
+      const grand_total = parseFloat($("#grand_total").val());
+
+      $(".grand-total-potongan").text(
+        `RP ${nf.format(
+          isNaN(grand_total - total_potongan) ? 0 : grand_total - total_potongan
+        )}`
+      );
+    }
+  );
+
+  // batal booking
+
+  $("#dt_main").on("click", ".btn-batal", function () {
+    const kode = $(this).data("kode");
+
+    const conf = confirm("Lanjutkan proses batal? " + kode);
+
+    if (conf) {
+      batal_booking(kode, "Batal");
+    }
+  });
+
+  // reject booking
+
+  $("#dt_main").on("click", ".btn-reject", function () {
+    const kode = $(this).data("kode");
+
+    const conf = confirm("Lanjutkan proses batal? " + kode);
+
+    if (conf) {
+      batal_booking(kode, "Reject");
+    }
+  });
+
+  function batal_booking(kode, status) {
+    const formData = new FormData(frm_main);
+
+    formData.append("kode", kode);
+
+    formData.append("status", status);
+
+    fetch(`${BASE_URL}batal_booking`, {
+      method: "post",
+
+      body: formData,
+    })
+      .then((response) => response.json())
+
+      .then((result) => {
+        let message = "Batal";
+
+        if (status == "Reject") {
+          message = "Reject";
+        }
+
+        if (result === true) {
+          toastr.success(`Booking berhasil ${message}`);
+
+          data_table.ajax.reload();
+        } else {
+          toastr.error(`Booking gagal ${message}`);
+        }
+      })
+
+      .catch((error) => toastr.error(error));
+  }
+
+  // save proses kirim
+
+  $("#btn_save").click(function () {
+    $(this).prop("disabled", true);
+
+    $(this).empty();
+
+    $(this).append('<i class="fas fa-sync-alt fa-spin"></i>');
+
+    const bukti_trf = document.getElementById("bukti_trf");
+    const bukti_trf_length = bukti_trf.files.length;
+
+    if (bukti_trf_length > 0) {
+      const extension = bukti_trf.files[0].type.includes("image");
+      if (!extension) {
+        toastr.error("Tipe file bukti transfer harus gambar.");
+        $(this).prop("disabled", false);
+        $(this).empty();
+        $(this).append("Simpan");
+        return false;
+      } else if (bukti_trf.files[0].size > 4000000) {
+        toastr.error("Ukuran file bukti transfer maxsimal 4MB.");
+        $(this).prop("disabled", false);
+        $(this).empty();
+        $(this).append("Simpan");
+        return false;
+      }
+    }
+
+    $("#status").prop("disabled", false);
+    const formData = new FormData(frm_main);
+
+    fetch(`${BASE_URL}save_proses_kirim`, {
+      method: "post",
+
+      body: formData,
+    })
+      .then((response) => response.json())
+
+      .then((result) => {
+        if (result === true) {
+          $("#modal_main").modal("hide");
+
+          toastr.success("Update berhasil di lakukan");
+
+          data_table.ajax.reload();
+        } else {
+          toastr.error("Update gagal dilakukan");
+        }
+
+        $(this).prop("disabled", false);
+
+        $(this).empty();
+
+        if (role == "Reseller") {
+          $("#status").prop("disabled", true);
+          $(this).append("Simpan");
+        } else {
+          $(this).append("Proses Kirim");
+        }
+      })
+
+      .catch((error) => toastr.error(error));
+  });
+</script>
+
+{% endblock %}

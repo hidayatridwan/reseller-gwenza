@@ -1,0 +1,1125 @@
+{% extends 'layout.html' %} {% block content %} {% block css%}
+
+<style>
+  .btn-model:hover {
+    filter: opacity(50%);
+  }
+
+  .gambar-thumb:hover {
+    filter: opacity(50%);
+  }
+</style>
+
+{% endblock %}
+
+<form id="frm_main">
+  <div class="card">
+    <div class="card-header p-0">
+      <ul class="nav nav-pills ml-auto p-2">
+        <li class="nav-item">
+          <a class="nav-link active" href="#tab_1" data-toggle="tab">Produk</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#tab_2" data-toggle="tab">Detail</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#tab_3" data-toggle="tab">Pengiriman</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- /.card-header -->
+
+    <div class="card-body">
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab_1">
+          <table width="100%" id="dt_main" class="table table-borderless">
+            <thead>
+              <th>
+                <input
+                  type="text"
+                  id="cari_produk"
+                  class="form-control"
+                  placeholder="Cari produk disini..."
+                />
+              </th>
+            </thead>
+
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- /.tab-pane -->
+
+        <div class="tab-pane" id="tab_2">
+          <div class="row">
+            <div class="col-md-4">
+              <img
+                id="gambar"
+                src="{{ base_url }}assets/dist/img/nophoto.png"
+                alt=""
+                class="w-100"
+              />
+            </div>
+
+            <div class="col-md-8 pl-2 desc-produk">
+              <h1 id="nama"></h1>
+
+              <p id="model_label"></p>
+
+              <input type="hidden" id="temp_kode_produk" />
+
+              <input type="hidden" id="temp_nama" />
+
+              <input type="hidden" id="temp_noline" />
+
+              <input type="hidden" id="temp_gambar" />
+
+              <input type="hidden" id="temp_model" />
+
+              <div id="model"></div>
+
+              <table
+                width="100%"
+                id="size"
+                class="table table-bordered table-striped table-sm table-responsive d-none mt-2"
+              >
+                <thead class="text-center">
+                  <tr>
+                    <th colspan="7">Size</th>
+                  </tr>
+
+                  <tr>
+                    <th class="w-20">M</th>
+
+                    <th class="w-20">L</th>
+
+                    <th class="w-20">XL</th>
+
+                    <th class="w-20">XXL</th>
+
+                    <th class="w-20">XXXL</th>
+
+                    <th class="w-20">Dewasa (L)</th>
+
+                    <th class="w-20">Dewasa (XL)</th>
+                  </tr>
+                </thead>
+
+                <tbody class="text-center"></tbody>
+              </table>
+
+              <table
+                width="100%"
+                id="harga"
+                class="table table-bordered table-striped table-sm table-responsive d-none"
+              >
+                <thead class="text-center">
+                  <tr>
+                    <th colspan="7">Harga</th>
+                  </tr>
+
+                  <tr>
+                    <th class="w-20">M</th>
+
+                    <th class="w-20">L</th>
+
+                    <th class="w-20">XL</th>
+
+                    <th class="w-20">XXL</th>
+
+                    <th class="w-20">XXXL</th>
+
+                    <th class="w-20">Dewasa (L)</th>
+
+                    <th class="w-20">Dewasa (XL)</th>
+                  </tr>
+                </thead>
+
+                <tbody class="text-center"></tbody>
+              </table>
+
+              <table
+                width="100%"
+                id="size_booking"
+                class="table table-bordered table-striped table-sm table-responsive d-none"
+              >
+                <thead class="text-center">
+                  <tr>
+                    <th colspan="7">Qty Pesanan</th>
+                  </tr>
+
+                  <tr>
+                    <th class="w-20">M</th>
+
+                    <th class="w-20">L</th>
+
+                    <th class="w-20">XL</th>
+
+                    <th class="w-20">XXL</th>
+
+                    <th class="w-20">XXXL</th>
+
+                    <th class="w-20">Dewasa (L)</th>
+
+                    <th class="w-20">Dewasa (XL)</th>
+                  </tr>
+                </thead>
+
+                <tbody class="text-center"></tbody>
+              </table>
+
+              <button
+                type="button"
+                id="add_to_cart"
+                class="btn btn-success btn-lg btn-block mt-3 d-none"
+              >
+                <i class="fas fa-cart-plus fa-lg mr-2"></i>
+
+                Add to Cart
+              </button>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-12">
+              <h3>List Booking</h3>
+
+              <table
+                width="100%"
+                id="list_booking"
+                class="table table-bordered table-striped table-responsive table-sm"
+              >
+                <thead>
+                  <th>#</th>
+
+                  <th class="w-50">Produk</th>
+
+                  <th class="w-25">Model</th>
+
+                  <th class="w-25">Size</th>
+
+                  <th class="w-25">Harga</th>
+
+                  <th class="w-25">Qty</th>
+
+                  <th class="w-25">Total</th>
+                </thead>
+
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <button
+                type="button"
+                id="btn_produk"
+                class="btn btn-warning btn-block"
+              >
+                <i class="fas fa-arrow-left"></i> Kembali ke produk
+              </button>
+            </div>
+
+            <div class="col-sm-6">
+              <button
+                type="button"
+                id="btn_kirim"
+                class="btn btn-warning btn-block"
+              >
+                Lanjut pengiriman <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- /.tab-pane -->
+
+        <div class="tab-pane" id="tab_3">
+          <div class="form-horizontal">
+            <div class="form-group row">
+              <label for="nama_customer" class="col-sm-4 col-form-label"
+                >Nama Customer</label
+              >
+
+              <div class="col-sm-8">
+                <input
+                  type="text"
+                  id="nama_customer"
+                  name="nama_customer"
+                  class="form-control form-control-sm"
+                />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="alamat" class="col-sm-4 col-form-label">Alamat</label>
+
+              <div class="col-sm-8">
+                <textarea
+                  id="alamat"
+                  name="alamat"
+                  rows="4"
+                  class="form-control form-control-sm"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="nohp" class="col-sm-4 col-form-label">No HP</label>
+
+              <div class="col-sm-8">
+                <input
+                  type="text"
+                  id="nohp"
+                  name="nohp"
+                  class="form-control form-control-sm"
+                />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="kurir" class="col-sm-4 col-form-label"
+                >Jasa Kurir</label
+              >
+
+              <div class="col-sm-8">
+                <input
+                  type="text"
+                  id="kurir"
+                  name="kurir"
+                  placeholder="Ex. JNE, J&T, POS"
+                  class="form-control form-control-sm"
+                />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="keterangan" class="col-sm-4 col-form-label"
+                >Keterangan Admin</label
+              >
+
+              <div class="col-sm-8">
+                <textarea
+                  id="keterangan"
+                  name="keterangan"
+                  rows="4"
+                  class="form-control form-control-sm"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="offset-sm-4 col-sm-8">
+                <button type="button" id="btn_save" class="btn btn-success">
+                  Submit
+                </button>
+
+                <button type="button" id="btn_back" class="btn btn-default">
+                  Kembali
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- /.tab-pane -->
+      </div>
+
+      <!-- /.tab-content -->
+    </div>
+
+    <!-- /.card-body -->
+  </div>
+</form>
+
+{% endblock %} {% block js%}
+
+<script>
+  let produk_array = [];
+
+  let size_array = [];
+
+  const nf = new Intl.NumberFormat();
+
+  $(document).ready(function () {});
+
+  $("#cari_produk").keyup(function () {
+    data_table.search($(this).val()).draw();
+  });
+
+  $("#dt_main tbody").on("click", ".gambar-thumb", function () {
+    const idx = $(this).data("idx");
+
+    const image_element = $(this).find("img");
+
+    $(".gambar-main-" + idx).prop("src", image_element.attr("src"));
+
+    $(".gambar-thumb.filter").removeClass("filter");
+
+    $(this).addClass("filter");
+  });
+
+  // get all produk
+
+  const data_table = $("#dt_main").DataTable({
+    lengthChange: false,
+
+    processing: true,
+
+    ordering: false,
+
+    responsive: true,
+
+    info: false,
+
+    ajax: {
+      url: `${BASE_URL}get_produk`,
+
+      type: "post",
+    },
+
+    pageLength: 1000,
+
+    dom: '<"top"i>rt<"bottom"><"clear">',
+  });
+
+  // get one produk
+
+  $("#dt_main").on("click", ".btn-order", function () {
+    $(this).prop("disabled", true);
+
+    $(this).empty();
+
+    $(this).append('<i class="fas fa-sync-alt fa-spin"></i>');
+
+    const kode = $(this).data("kode");
+
+    const countProduk = produk_array.filter(
+      (produk) => produk.kode == kode
+    ).length;
+
+    if (countProduk > 0) {
+      const idx = produk_array.findIndex((obj) => obj.kode == kode);
+
+      fetch_produk(idx, this);
+
+      $('a[href="#tab_2"]').tab("show");
+    } else {
+      const formData = new FormData();
+
+      formData.append("kode", kode);
+
+      fetch(`${BASE_URL}get_produk_one`, {
+        method: "post",
+
+        body: formData,
+      })
+        .then((response) => response.json())
+
+        .then((result) => {
+          produk_array.push(result);
+
+          fetch_produk(produk_array.length - 1, this);
+
+          $('a[href="#tab_2"]').tab("show");
+        })
+
+        .catch((error) => toastr.error(error));
+    }
+  });
+
+  // fetch data produk
+
+  function fetch_produk(idx, el) {
+    $(el).prop("disabled", false);
+
+    $(el).empty();
+
+    $(el).append("Order");
+
+    result = produk_array[idx];
+
+    $("#size").addClass("d-none");
+
+    $("#harga").addClass("d-none");
+
+    $("#size_booking").addClass("d-none");
+
+    $("#add_to_cart").addClass("d-none");
+
+    $("#model").empty();
+
+    $("#size tbody").empty();
+
+    $("#harga tbody").empty();
+
+    $("#temp_kode_produk").val(result.kode);
+
+    $("#temp_nama").val(result.nama);
+
+    $("#nama").text(result.nama);
+
+    $("#model_label").text("");
+
+    let model = ``;
+
+    result.model.forEach((v, i) => {
+      if (i == 0) {
+        $("#gambar").prop("src", `${BASE_URL}uploads/produk/${v.gambar}`);
+
+        $("#model_label").text(`Model: ${v.model}`);
+      }
+
+      model += `<img src="${BASE_URL}uploads/produk/${v.gambar}" alt="" class="img-thumbnail btn-model mr-2" data-produk="${v.kode}~${v.noline}~${v.model}" style="height: 100px;">`;
+    });
+
+    $("#model").append(model);
+
+    // default click first model
+
+    $("#model").find(".btn-model")[0].click();
+  }
+
+  $("#dt_main tbody").on("click", ".gambar-thumb", function () {
+    const idx = $(this).data("idx");
+
+    const image_element = $(this).find("img");
+
+    $(".gambar-main-" + idx).prop("src", image_element.attr("src"));
+
+    $(".gambar-thumb.filter").removeClass("filter");
+
+    $(this).addClass("filter");
+  });
+
+  // fetch size produk by model
+
+  $(".desc-produk").on("click", ".btn-model", function () {
+    const produk = $(this).data("produk").split("~");
+
+    $("#gambar").prop("src", $(this).attr("src"));
+
+    $(".btn-model.filter").removeClass("filter");
+
+    $(this).addClass("filter");
+
+    $("#size").removeClass("d-none");
+
+    $("#harga").removeClass("d-none");
+
+    $("#size_booking").removeClass("d-none");
+
+    $("#add_to_cart").removeClass("d-none");
+
+    $("#size tbody").empty();
+
+    $("#harga tbody").empty();
+
+    $("#size_booking tbody").empty();
+
+    const data = produk_array.filter((obj) => obj.kode == produk[0])[0];
+
+    const data_model = produk_array.filter((obj) => obj.kode == produk[0])[0]
+      .model;
+
+    const v = data_model.filter((obj) => obj.noline == produk[1])[0];
+
+    $("#temp_noline").val(v.noline);
+
+    $("#temp_gambar").val(v.gambar);
+
+    $("#temp_model").val(v.model);
+
+    $("#model_label").text(`Model: ${produk[2]}`);
+
+    size_array = v;
+
+    $("#size tbody").append(
+      `<tr>
+
+      <td>${v.size_m}</td>
+
+      <td>${v.size_l}</td>
+
+      <td>${v.size_xl}</td>
+
+      <td>${v.size_xxl}</td>
+
+      <td>${v.size_xxxl}</td>
+
+      <td>${v.size_all_l}</td>
+
+      <td>${v.size_all}</td>
+
+      </tr>`
+    );
+
+    $("#harga tbody").append(
+      `<tr>
+
+      <td>RP ${nf.format(data.harga_m)}</td>
+
+      <td>RP ${nf.format(data.harga_l)}</td>
+
+      <td>RP ${nf.format(data.harga_xl)}</td>
+
+      <td>RP ${nf.format(data.harga_xxl)}</td>
+
+      <td>RP ${nf.format(data.harga_xxxl)}</td>
+
+      <td>RP ${nf.format(data.harga_all_l)}</td>
+
+      <td>RP ${nf.format(data.harga_all)}</td>
+
+      </tr>`
+    );
+
+    $("#size_booking tbody").append(`<tr>
+
+                  <td>
+
+                    <input
+
+                      type="number"
+
+                      id="size_m"
+
+                      class="form-control form-control-sm w-80px"
+
+                      min="1"
+
+                      data-harga="${data.harga_m}"
+
+                    />
+
+                  </td>
+
+                  <td>
+
+                    <input
+
+                      type="number"
+
+                      id="size_l"
+
+                      class="form-control form-control-sm w-80px"
+
+                      min="1"
+
+                      data-harga="${data.harga_l}"
+
+                    />
+
+                  </td>
+
+                  <td>
+
+                    <input
+
+                      type="number"
+
+                      id="size_xl"
+
+                      class="form-control form-control-sm w-80px"
+
+                      min="1"
+
+                      data-harga="${data.harga_xl}"
+
+                    />
+
+                  </td>
+
+                  <td>
+
+                    <input
+
+                      type="number"
+
+                      id="size_xxl"
+
+                      class="form-control form-control-sm w-80px"
+
+                      min="1"
+
+                      data-harga="${data.harga_xxl}"
+
+                    />
+
+                  </td>
+
+                  <td>
+
+                    <input
+
+                      type="number"
+
+                      id="size_xxxl"
+
+                      class="form-control form-control-sm w-80px"
+
+                      min="1"
+
+                      data-harga="${data.harga_xxxl}"
+
+                    />
+
+                  </td>
+
+                  <td>
+
+                    <input
+
+                      type="number"
+
+                      id="size_all_l"
+
+                      class="form-control form-control-sm w-80px"
+
+                      min="1"
+
+                      data-harga="${data.harga_all_l}"
+
+                    />
+
+                  </td>
+
+                  <td>
+
+                    <input
+
+                      type="number"
+
+                      id="size_all"
+
+                      class="form-control form-control-sm w-80px"
+
+                      min="1"
+
+                      data-harga="${data.harga_all}"
+
+                    />
+
+                  </td>
+
+                </tr>`);
+  });
+
+  // add to cart
+
+  $("#add_to_cart").click(function () {
+    const size_m = isNaN(parseInt($("#size_m").val()))
+      ? 0
+      : parseInt($("#size_m").val());
+
+    const size_l = isNaN(parseInt($("#size_l").val()))
+      ? 0
+      : parseInt($("#size_l").val());
+
+    const size_xl = isNaN(parseInt($("#size_xl").val()))
+      ? 0
+      : parseInt($("#size_xl").val());
+
+    const size_xxl = isNaN(parseInt($("#size_xxl").val()))
+      ? 0
+      : parseInt($("#size_xxl").val());
+
+    const size_xxxl = isNaN(parseInt($("#size_xxxl").val()))
+      ? 0
+      : parseInt($("#size_xxxl").val());
+
+    const size_all_l = isNaN(parseInt($("#size_all_l").val()))
+      ? 0
+      : parseInt($("#size_all_l").val());
+
+    const size_all = isNaN(parseInt($("#size_all").val()))
+      ? 0
+      : parseInt($("#size_all").val());
+
+    if (
+      size_m == 0 &&
+      size_l == 0 &&
+      size_xl == 0 &&
+      size_xxl == 0 &&
+      size_xxxl == 0 &&
+      size_all_l == 0 &&
+      size_all == 0
+    ) {
+      toastr.warning("Input qty di salah satu size.");
+
+      return;
+    }
+
+    let tr = ``;
+
+    const kode = $("#temp_kode_produk").val();
+
+    const nama = $("#temp_nama").val();
+
+    const noline = $("#temp_noline").val();
+
+    const model = $("#temp_model").val();
+
+    const gambar = BASE_URL + "uploads/produk/" + $("#temp_gambar").val();
+
+    if (size_m <= parseInt(size_array.size_m)) {
+      if (size_m > 0) {
+        const harga = $("#size_m").data("harga");
+
+        tr += `<tr>
+
+          <td><button type="button" class="btn btn-xs btn-danger btn-remove" data-produk="${kode}~${noline}~size_m~${size_m}">X</button></td>
+
+          <td><input type="hidden" name="kode_produk[]" value="${kode}">${nama}</td>
+
+          <td><input type="hidden" name="noline[]" value="${noline}">${model}</td>
+
+          <td><input type="hidden" name="size[]" value="M">M</td>
+
+          <td>${nf.format(harga)}</td>
+
+          <td><input type="hidden" name="qty_size[]" value="${size_m}">${size_m}</td>
+
+          <td>${nf.format(parseInt(size_m) * harga)}</td>
+
+        </tr>`;
+
+        setStok(kode, noline, "size_m", parseInt(size_array.size_m) - size_m);
+      }
+    } else {
+      toastr.warning("Qty melebihi stok yang tersedia.");
+
+      return;
+    }
+
+    if (size_l <= parseInt(size_array.size_l)) {
+      if (size_l > 0) {
+        const harga = $("#size_l").data("harga");
+
+        tr += `<tr>
+
+          <td><button type="button" class="btn btn-xs btn-danger btn-remove" data-produk="${kode}~${noline}~size_l~${size_l}">X</button></td>
+
+          <td><input type="hidden" name="kode_produk[]" value="${kode}">${nama}</td>
+
+          <td><input type="hidden" name="noline[]" value="${noline}">${model}</td>
+
+          <td><input type="hidden" name="size[]" value="L">L</td>
+
+          <td>${nf.format(harga)}</td>
+
+          <td><input type="hidden" name="qty_size[]" value="${size_l}">${size_l}</td>
+
+          <td>${nf.format(parseInt(size_l) * harga)}</td>
+
+        </tr>`;
+
+        setStok(kode, noline, "size_l", parseInt(size_array.size_l) - size_l);
+      }
+    } else {
+      toastr.warning("Qty melebihi stok yang tersedia.");
+
+      return;
+    }
+
+    if (size_xl <= parseInt(size_array.size_xl)) {
+      if (size_xl > 0) {
+        const harga = $("#size_xl").data("harga");
+
+        tr += `<tr>
+
+          <td><button type="button" class="btn btn-xs btn-danger btn-remove" data-produk="${kode}~${noline}~size_xl~${size_xl}">X</button></td>
+
+          <td><input type="hidden" name="kode_produk[]" value="${kode}">${nama}</td>
+
+          <td><input type="hidden" name="noline[]" value="${noline}">${model}</td>
+
+          <td><input type="hidden" name="size[]" value="XL">XL</td>
+
+          <td>${nf.format(harga)}</td>
+
+          <td><input type="hidden" name="qty_size[]" value="${size_xl}">${size_xl}</td>
+
+          <td>${nf.format(parseInt(size_xl) * harga)}</td>
+
+        </tr>`;
+
+        setStok(
+          kode,
+
+          noline,
+
+          "size_xl",
+
+          parseInt(size_array.size_xl) - size_xl
+        );
+      }
+    } else {
+      toastr.warning("Qty melebihi stok yang tersedia.");
+
+      return;
+    }
+
+    if (size_xxl <= parseInt(size_array.size_xxl)) {
+      if (size_xxl > 0) {
+        const harga = $("#size_xxl").data("harga");
+
+        tr += `<tr>
+
+          <td><button type="button" class="btn btn-xs btn-danger btn-remove" data-produk="${kode}~${noline}~size_xxl~${size_xxl}">X</button></td>
+
+          <td><input type="hidden" name="kode_produk[]" value="${kode}">${nama}</td>
+
+          <td><input type="hidden" name="noline[]" value="${noline}">${model}</td>
+
+          <td><input type="hidden" name="size[]" value="XXL">XXL</td>
+
+          <td>${nf.format(harga)}</td>
+
+          <td><input type="hidden" name="qty_size[]" value="${size_xxl}">${size_xxl}</td>
+
+          <td>${nf.format(parseInt(size_xxl) * harga)}</td>
+
+        </tr>`;
+
+        setStok(
+          kode,
+
+          noline,
+
+          "size_xxl",
+
+          parseInt(size_array.size_xxl) - size_xxl
+        );
+      }
+    } else {
+      toastr.warning("Qty melebihi stok yang tersedia.");
+
+      return;
+    }
+
+    if (size_xxxl <= parseInt(size_array.size_xxxl)) {
+      if (size_xxxl > 0) {
+        const harga = $("#size_xxxl").data("harga");
+
+        tr += `<tr>
+
+          <td><button type="button" class="btn btn-xs btn-danger btn-remove" data-produk="${kode}~${noline}~size_xxxl~${size_xxxl}">X</button></td>
+
+          <td><input type="hidden" name="kode_produk[]" value="${kode}">${nama}</td>
+
+          <td><input type="hidden" name="noline[]" value="${noline}">${model}</td>
+
+          <td><input type="hidden" name="size[]" value="XXXL">XXXL</td>
+
+          <td>${nf.format(harga)}</td>
+
+          <td><input type="hidden" name="qty_size[]" value="${size_xxxl}">${size_xxxl}</td>
+
+          <td>${nf.format(parseInt(size_xxxl) * harga)}</td>
+
+        </tr>`;
+
+        setStok(
+          kode,
+
+          noline,
+
+          "size_xxxl",
+
+          parseInt(size_array.size_xxxl) - size_xxxl
+        );
+      }
+    } else {
+      toastr.warning("Qty melebihi stok yang tersedia.");
+
+      return;
+    }
+
+    if (size_all_l <= parseInt(size_array.size_all_l)) {
+      if (size_all_l > 0) {
+        const harga = $("#size_all_l").data("harga");
+
+        tr += `<tr>
+
+          <td><button type="button" class="btn btn-xs btn-danger btn-remove" data-produk="${kode}~${noline}~size_all_l~${size_all_l}">X</button></td>
+
+          <td><input type="hidden" name="kode_produk[]" value="${kode}">${nama}</td>
+
+          <td><input type="hidden" name="noline[]" value="${noline}">${model}</td>
+
+          <td><input type="hidden" name="size[]" value="DewasaL">Dewasa (L)</td>
+
+          <td>${nf.format(harga)}</td>
+
+          <td><input type="hidden" name="qty_size[]" value="${size_all_l}">${size_all_l}</td>
+
+          <td>${nf.format(parseInt(size_all_l) * harga)}</td>
+
+        </tr>`;
+
+        setStok(
+          kode,
+
+          noline,
+
+          "size_all_l",
+
+          parseInt(size_array.size_all_l) - size_all_l
+        );
+      }
+    } else {
+      toastr.warning("Qty melebihi stok yang tersedia.");
+
+      return;
+    }
+
+    if (size_all <= parseInt(size_array.size_all)) {
+      if (size_all > 0) {
+        const harga = $("#size_all").data("harga");
+
+        tr += `<tr>
+
+          <td><button type="button" class="btn btn-xs btn-danger btn-remove" data-produk="${kode}~${noline}~size_all~${size_all}">X</button></td>
+
+          <td><input type="hidden" name="kode_produk[]" value="${kode}">${nama}</td>
+
+          <td><input type="hidden" name="noline[]" value="${noline}">${model}</td>
+
+          <td><input type="hidden" name="size[]" value="Dewasa">Dewasa (XL)</td>
+
+          <td>${nf.format(harga)}</td>
+
+          <td><input type="hidden" name="qty_size[]" value="${size_all}">${size_all}</td>
+
+          <td>${nf.format(parseInt(size_all) * harga)}</td>
+
+        </tr>`;
+
+        setStok(
+          kode,
+
+          noline,
+
+          "size_all",
+
+          parseInt(size_array.size_all) - size_all
+        );
+      }
+    } else {
+      toastr.warning("Qty melebihi stok yang tersedia.");
+
+      return;
+    }
+
+    $("#list_booking tbody").append(tr);
+
+    $("#size").addClass("d-none");
+
+    $("#size_booking").addClass("d-none");
+
+    $("#harga").addClass("d-none");
+
+    $("#size tbody").empty();
+
+    $("#size_booking tbody").empty();
+
+    $("#harga tbody").empty();
+
+    $("#add_to_cart").addClass("d-none");
+
+    toastr.success(`${nama} added to cart`);
+  });
+
+  function setStok(kode, noline, size, stok) {
+    const idx_produk = produk_array.findIndex((obj) => obj.kode == kode);
+
+    const idx_noline = produk_array[idx_produk].model.findIndex(
+      (obj) => obj.noline == noline
+    );
+
+    produk_array[idx_produk].model[idx_noline][size] = stok;
+  }
+
+  // delete produk from cart
+
+  $("#list_booking tbody").on("click", ".btn-remove", function () {
+    $(this).closest("tr").remove();
+
+    const produk = $(this).data("produk").split("~");
+
+    const qty_temp = produk_array
+
+      .filter((obj) => obj.kode == produk[0])[0]
+      .model.filter((obj) => obj.noline == produk[1])[0][produk[2]];
+
+    const stok = parseInt(qty_temp) + parseInt(produk[3]);
+
+    setStok(produk[0], produk[1], produk[2], stok);
+  });
+
+  // save booking
+
+  $("#btn_save").click(function () {
+    if ($("#list_booking tbody tr").length == 0) {
+      toastr.info("Keranjang anda masih kosong");
+
+      $('a[href="#tab_2"]').tab("show");
+
+      return false;
+    }
+
+    $(this).prop("disabled", true);
+
+    $(this).empty();
+
+    $(this).append('<i class="fas fa-sync-alt fa-spin"></i>');
+
+    const formData = new FormData(frm_main);
+
+    fetch(`${BASE_URL}save_booking`, {
+      method: "post",
+
+      body: formData,
+    })
+      .then((response) => response.json())
+
+      .then((result) => {
+        if (result.status === true) {
+          toastr.success("Booking created with ID " + result.message);
+        } else {
+          toastr.error(result.message);
+        }
+
+        setTimeout(function () {
+          window.location.reload();
+        }, 2000);
+      })
+
+      .catch((error) => toastr.error(error));
+  });
+
+  $("#btn_produk").click(function () {
+    $('a[href="#tab_1"]').tab("show");
+  });
+
+  $("#btn_kirim").click(function () {
+    if ($("#list_booking tbody tr").length == 0) {
+      toastr.info("Keranjang anda masih kosong");
+
+      return false;
+    }
+
+    $('a[href="#tab_3"]').tab("show");
+  });
+
+  $("#btn_back").click(function () {
+    $('a[href="#tab_2"]').tab("show");
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,210 @@
+{% extends 'layout.html' %} {% block content %}
+
+<div class="card card-outline card-success">
+  <div class="card-header">
+    <button type="button" id="btn_add" class="btn btn-primary btn-sm">
+      <i class="fa fa-plus"></i> Tambah User
+    </button>
+  </div>
+  <div class="card-body table-responsive">
+    <table
+      width="100%"
+      id="dt_main"
+      class="table table-sm table-bordered table-striped"
+    >
+      <thead>
+        <th>No</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Role</th>
+        <th>Nama</th>
+        <th>Proses</th>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <!-- /.card-body -->
+</div>
+<!-- /.card -->
+
+<!-- Modal -->
+<div class="modal fade" id="modal_main">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ title }}</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="frm_main" class="form-horizontal">
+          <div class="form-group row">
+            <label for="username" class="col-sm-4 col-form-label"
+              >Username</label
+            >
+            <div class="col-sm-8">
+              <input
+                type="text"
+                id="username"
+                name="username"
+                class="form-control form-control-sm"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="password" class="col-sm-4 col-form-label"
+              >Password</label
+            >
+            <div class="col-sm-8">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-control form-control-sm"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="role" class="col-sm-4 col-form-label">Role</label>
+            <div class="col-sm-8">
+              <select
+                id="role"
+                name="role"
+                class="form-control form-control-sm"
+              >
+                <option value="Admin">Admin</option>
+                <option value="Reseller">Reseller</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="kode_reseller" class="col-sm-4 col-form-label"
+              >Reseller</label
+            >
+            <div class="col-sm-8">
+              <select
+                id="kode_reseller"
+                name="kode_reseller"
+                class="form-control form-control-sm"
+              >
+                <option value=""></option>
+                {% for v in reseller %}
+                <option value="{{ v.kode }}">{{ v.kode }}~{{ v.nama }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button
+          type="button"
+          class="btn btn-sm btn-default"
+          data-dismiss="modal"
+        >
+          Tutup
+        </button>
+        <button type="button" id="btn_save" class="btn btn-sm btn-primary">
+          Simpan
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+{% endblock %} {% block js%}
+<script>
+  $(document).ready(function () {});
+
+  // get all user
+  const data_table = $("#dt_main").DataTable({
+    searching: true,
+    lengthChange: false,
+    processing: true,
+    ordering: false,
+    responsive: true,
+    ajax: {
+      url: `${BASE_URL}data_user`,
+      type: "post",
+    },
+    pageLength: 10,
+    columnDefs: [
+      {
+        targets: [0, 5],
+        className: "text-center",
+        searchable: false,
+      },
+    ],
+  });
+
+  // tambah user
+  $("#btn_add").click(function () {
+    $("#modal_main").modal("show");
+  });
+
+  // save user
+  $("#btn_save").click(function () {
+        $(this).prop("disabled", true);
+        $(this).empty();
+        $(this).append('<i class="fas fa-sync-alt fa-spin"></i>');
+    const formData = new FormData(frm_main);
+    fetch(`${BASE_URL}save_user`, {
+      method: "post",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result === true) {
+          $("#modal_main").modal("hide");
+          toastr.success("User created");
+          data_table.ajax.reload();
+        } else {
+          toastr.error("Failed to create user");
+        }
+        $(this).prop("disabled", true);
+        $(this).empty();
+        $(this).append('Simpan');
+      })
+      .catch((error) => toastr.error(error));
+  });
+
+// edit user
+$("#dt_main").on("click", ".btn-edit", function () {
+  $("#modal_main").modal("show");
+  const kode = $(this).data("kode");
+
+  const formData = new FormData();
+  formData.append("table", 'user');
+  formData.append("col", 'username');
+  formData.append("val", kode);
+  fetch(`${BASE_URL}get_data_one`, {
+    method: "post",
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      // append to elements by object id
+      for (const [key, value] of Object.entries(result)) {
+        const element = document.getElementById(key);
+        if (element !== undefined && element !== null) {
+          element.value = value;
+        }
+      }
+      $("#password").val('');
+    })
+    .catch((error) => toastr.error(error));
+});
+</script>
+{% endblock %}

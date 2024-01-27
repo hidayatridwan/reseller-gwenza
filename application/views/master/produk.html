@@ -1,0 +1,480 @@
+{% extends 'layout.html' %} {% block content %}
+
+<div class="card card-outline card-success">
+  <div class="card-header">
+    <button type="button" id="btn_add" class="btn btn-primary btn-sm">
+      <i class="fa fa-plus"></i> Tambah Produk
+    </button>
+  </div>
+
+  <div class="card-body table-responsive">
+    <table
+      width="100%"
+      id="dt_main"
+      class="table table-sm table-bordered table-striped"
+    >
+      <thead>
+        <tr>
+          <th rowspan="2">No</th>
+          <th rowspan="2">Kode</th>
+          <th rowspan="2">Produk</th>
+          <th rowspan="2">Stok</th>
+          <th colspan="7" class="text-center">Harga</th>
+          <th rowspan="2">Proses</th>
+        </tr>
+
+        <tr>
+          <th class="w-10">M</th>
+          <th class="w-10">L</th>
+          <th class="w-10">XL</th>
+          <th class="w-10">XXL</th>
+          <th class="w-10">XXXL</th>
+          <th class="w-10">Dewasa (L)</th>
+          <th class="w-10">Dewasa (XL)</th>
+        </tr>
+      </thead>
+
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- /.card-body -->
+</div>
+
+<!-- /.card -->
+
+<!-- Modal -->
+
+<div class="modal fade" id="modal_main">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ title }}</h4>
+
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form id="frm_main" class="form-horizontal">
+          <div class="form-group row">
+            <label for="kode" class="col-sm-2 col-form-label">Kode</label>
+
+            <div class="col-sm-10">
+              <input
+                type="text"
+                id="kode"
+                name="kode"
+                class="form-control form-control-sm"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="nama" class="col-sm-2 col-form-label"
+              >Nama produk</label
+            >
+
+            <div class="col-sm-10">
+              <input
+                type="text"
+                id="nama"
+                name="nama"
+                class="form-control form-control-sm"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="model" class="col-sm-2 col-form-label">Model</label>
+
+            <div class="col-sm-10 table-responsive">
+              <table
+                width="100%"
+                id="dt_model"
+                class="table table-sm table-bordered table-responsive table-striped"
+              >
+                <thead>
+                  <th class="text-center">
+                    <button
+                      type="button"
+                      id="btn_add_model"
+                      class="btn btn-xs btn-primary btn-sm"
+                    >
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </th>
+
+                  <th>Gambar</th>
+                  <th>Model</th>
+                  <th>M</th>
+                  <th>L</th>
+                  <th>XL</th>
+                  <th>XXL</th>
+                  <th>XXXL</th>
+                  <th>Dewasa (L)</th>
+                  <th>Dewasa (XL)</th>
+                </thead>
+
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="harga" class="col-sm-2 col-form-label">Harga</label>
+
+            <div class="col-sm-10 table-responsive">
+              <table
+                width="100%"
+                id="dt_harga"
+                class="table table-sm table-bordered table-striped table-responsive"
+              >
+                <thead>
+                  <th>M</th>
+                  <th>L</th>
+                  <th>XL</th>
+                  <th>XXL</th>
+                  <th>XXXL</th>
+                  <th>Dewasa (L)</th>
+                  <th>Dewasa (XL)</th>
+                </thead>
+
+                <tbody>
+                  <td>
+                    <input
+                      type="number"
+                      id="harga_m"
+                      name="harga_m"
+                      class="form-control form-control-sm w-80px"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      id="harga_l"
+                      name="harga_l"
+                      class="form-control form-control-sm w-80px"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      id="harga_xl"
+                      name="harga_xl"
+                      class="form-control form-control-sm w-80px"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      id="harga_xxl"
+                      name="harga_xxl"
+                      class="form-control form-control-sm w-80px"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      id="harga_xxxl"
+                      name="harga_xxxl"
+                      class="form-control form-control-sm w-80px"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      id="harga_all_l"
+                      name="harga_all_l"
+                      class="form-control form-control-sm w-80px"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      id="harga_all"
+                      name="harga_all"
+                      class="form-control form-control-sm w-80px"
+                    />
+                  </td>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer justify-content-between">
+        <button
+          type="button"
+          class="btn btn-sm btn-default"
+          data-dismiss="modal"
+        >
+          Tutup
+        </button>
+
+        <button type="button" id="btn_save" class="btn btn-sm btn-primary">
+          Simpan
+        </button>
+      </div>
+    </div>
+
+    <!-- /.modal-content -->
+  </div>
+
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- /.modal -->
+
+{% endblock %} {% block js%}
+
+<script>
+  const nf = new Intl.NumberFormat();
+
+  $(document).ready(function () {});
+
+  // get all produk
+
+  const data_table = $("#dt_main").DataTable({
+    searching: true,
+
+    lengthChange: false,
+
+    processing: true,
+
+    ordering: false,
+
+    responsive: true,
+
+    ajax: {
+      url: `${BASE_URL}data_produk`,
+
+      type: "post",
+    },
+
+    columnDefs: [
+      {
+        targets: [0, 1, 9],
+
+        className: "text-center",
+
+        searchable: false,
+      },
+    ],
+    lengthMenu: [
+
+      [10, 25, 50, 100, -1],
+
+      [10, 25, 50, 100, "All"],
+
+    ],
+
+    dom: "Bfrtip",
+
+    buttons: ["csv", "excel", "pageLength"],
+  });
+
+  // tambah produk
+
+  $("#btn_add").click(function () {
+    $("#modal_main").modal("show");
+  });
+
+  // add model
+
+  $("#btn_add_model").click(function () {
+    let tr = `<tr>
+      <td class="text-center"><button type="button" class="btn btn-xs btn-danger btn-remove-model"><i class="far fa-trash-alt fa-xs"></i></button></td>
+      <td>
+        <input type="hidden" name="noline[]" />
+        <input type="file" name="gambar[]" />
+        <input type="hidden" name="gambar_hidden[]" />
+      </td>
+      <td class="w-20"><input type="text" name="model[]" class="form-control form-control-sm w-80px"/></td>
+      <td class="w-20"><input type="number" name="size_m[]" class="form-control form-control-sm w-80px"/></td>
+      <td class="w-20"><input type="number" name="size_l[]" class="form-control form-control-sm w-80px"/></td>
+      <td class="w-20"><input type="number" name="size_xl[]" class="form-control form-control-sm w-80px"/></td>
+      <td class="w-20"><input type="number" name="size_xxl[]" class="form-control form-control-sm w-80px"/></td>
+      <td class="w-20"><input type="number" name="size_xxxl[]" class="form-control form-control-sm w-80px"/></td>
+      <td class="w-20"><input type="number" name="size_all_l[]" class="form-control form-control-sm w-80px"/></td>
+      <td class="w-20"><input type="number" name="size_all[]" class="form-control form-control-sm w-80px"/></td>
+      </tr>`;
+
+    $("#dt_model tbody").append(tr);
+  });
+
+  // remove model
+
+  $("#dt_model tbody").on("click", ".btn-remove-model", function () {
+    $(this).closest("tr").remove();
+  });
+
+  // save produk
+
+  $("#btn_save").click(function () {
+    $(this).prop("disabled", true);
+
+    $(this).empty();
+
+    $(this).append('<i class="fas fa-sync-alt fa-spin"></i>');
+
+    let valid = true;
+    $('#dt_model tbody input[name="gambar[]"]').each(function () {
+      const bukti_trf_length = $(this)[0].files.length;
+
+      if (bukti_trf_length > 0) {
+        const extension = $(this)[0].files[0].type.includes("image");
+        if (!extension) {
+          toastr.error("Tipe file model harus gambar.");
+          $("#btn_save").prop("disabled", false);
+          $("#btn_save").empty();
+          $("#btn_save").append("Simpan");
+          valid = false;
+        } else if ($(this)[0].files[0].size > 4000000) {
+          toastr.error("Ukuran file bukti transfer maxsimal 4MB.");
+          $("#btn_save").prop("disabled", false);
+          $("#btn_save").empty();
+          $("#btn_save").append("Simpan");
+          valid = false;
+        }
+      }
+    });
+
+    if (valid === false) {
+      return false;
+    }
+
+    const formData = new FormData(frm_main);
+
+    fetch(`${BASE_URL}save_produk`, {
+      method: "post",
+
+      body: formData,
+    })
+      .then((response) => response.json())
+
+      .then((result) => {
+        if (result === true) {
+          $("#modal_main").modal("hide");
+
+          toastr.success("Produk created");
+
+          data_table.ajax.reload();
+        } else {
+          toastr.error("Failed to create produk");
+        }
+
+        $(this).prop("disabled", false);
+
+        $(this).empty();
+
+        $(this).append("Simpan");
+      })
+
+      .catch((error) => toastr.error(error));
+  });
+
+  // edit produk
+
+  $("#dt_main").on("click", ".btn-edit", function () {
+    $("#frm_main")[0].reset();
+    $("#modal_main").modal("show");
+
+    const kode = $(this).data("kode");
+
+    const formData = new FormData();
+
+    formData.append("kode", kode);
+
+    fetch(`${BASE_URL}get_produk_one`, {
+      method: "post",
+
+      body: formData,
+    })
+      .then((response) => response.json())
+
+      .then((result) => {
+        // append to elements by object id
+
+        for (const [key, value] of Object.entries(result)) {
+          const element = document.getElementById(key);
+
+          if (element !== undefined && element !== null) {
+            element.value = value;
+          }
+        }
+
+        // append to detail stok
+
+        $("#dt_model tbody").empty();
+
+        result.model.forEach((v) => {
+          let tr = `<tr>
+      <td><button type="button" class="btn btn-xs btn-danger btn-remove-model"><i class="far fa-trash-alt fa-xs"></i></button></td>
+      <td class="w-20">
+        <input type="hidden" name="noline[]" value="${v.noline}" />
+        <input type="file" name="gambar[]" />
+        <input type="hidden" name="gambar_hidden[]" value="${v.gambar}" />
+        <img src="${BASE_URL}uploads/produk/${v.gambar}" alt="" class="w-20" />
+      </td>
+      <td><input type="text" name="model[]" value="${v.model}" class="form-control form-control-sm w-80px"/></td>
+      <td><input type="number" name="size_m[]" value="${v.size_m}" class="form-control form-control-sm w-80px"/></td>
+      <td><input type="number" name="size_l[]" value="${v.size_l}" class="form-control form-control-sm w-80px"/></td>
+      <td><input type="number" name="size_xl[]" value="${v.size_xl}" class="form-control form-control-sm w-80px"/></td>
+      <td><input type="number" name="size_xxl[]" value="${v.size_xxl}" class="form-control form-control-sm w-80px"/></td>
+      <td><input type="number" name="size_xxxl[]" value="${v.size_xxxl}" class="form-control form-control-sm w-80px"/></td>
+      <td><input type="number" name="size_all_l[]" value="${v.size_all_l}" class="form-control form-control-sm w-80px"/></td>
+      <td><input type="number" name="size_all[]" value="${v.size_all}" class="form-control form-control-sm w-80px"/></td>
+
+      </tr>`;
+
+          $("#dt_model tbody").append(tr);
+        });
+      })
+
+      .catch((error) => toastr.error(error));
+  });
+
+  // delete produk
+
+  $("#dt_main").on("click", ".btn-remove", function () {
+    const kode = $(this).data("kode");
+
+    const conf = confirm("Lanjutkan proses hapus? " + kode);
+
+    if (conf) {
+      const formData = new FormData(frm_main);
+
+      formData.append("kode", kode);
+
+      fetch(`${BASE_URL}remove_produk`, {
+        method: "post",
+
+        body: formData,
+      })
+        .then((response) => response.json())
+
+        .then((result) => {
+          if (result === true) {
+            toastr.success(`Successfully deleted`);
+
+            data_table.ajax.reload();
+          } else {
+            toastr.error(`Failed to delete`);
+          }
+        })
+
+        .catch((error) => toastr.error(error));
+    }
+  });
+</script>
+
+{% endblock %}

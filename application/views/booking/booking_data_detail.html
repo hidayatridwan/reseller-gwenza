@@ -1,0 +1,180 @@
+{% extends 'layout.html' %} {% block content %}
+
+
+
+<div class="card card-outline card-success">
+  <div class="card-header">
+    <div class="form-group row">
+      <label for="kode" class="col-sm-1 col-form-label"
+        >Periode</label
+      >
+      <div class="col-sm-2">
+        <input type="date" name="date_start" id="date_start" value="{{ now|date('Y-m-01') }}">
+      </div>
+      <div class="col-sm-9">
+        <input type="date" name="date_end" id="date_end" value="{{ now|date('Y-m-t') }}">
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+
+    <table width="100%" id="dt_main" class="table table-sm table-bordered table-responsive table-striped">
+
+      <thead>
+
+        <th>No</th>
+
+        <th>ID</th>
+
+        <th>Tanggal</th>
+
+        <th>Kode Reseller</th>
+
+        <th>Nama Reseller</th>
+
+        <th>Nama Customer</th>
+
+        <th>Alamat</th>
+
+        <th>No HP</th>
+
+        <th>Grand Total</th>
+
+        <th>Kurir</th>
+
+        <th>No Resi</th>
+
+        <th>Keterangan</th>
+
+        <th>Status</th>
+
+        <th>Kode Produk</th>
+
+        <th>Nama Produk</th>
+
+        <th>Model</th>
+
+        <th>Size</th>
+
+        <th>Harga</th>
+
+        <th>Qty</th>
+
+        <th>Total</th>
+
+      </thead>
+
+      <tbody></tbody>
+
+    </table>
+
+  </div>
+
+  <!-- /.card-body -->
+
+</div>
+
+<!-- /.card -->
+
+
+
+{% endblock %} {% block js%}
+
+<script>
+
+  const nf = new Intl.NumberFormat();
+
+
+
+  $(document).ready(function () {
+
+  });
+
+
+
+  // get all booking
+
+  const data_table = $("#dt_main").DataTable({
+
+    searching: true,
+
+    lengthChange: false,
+
+    processing: true,
+
+    ordering: false,
+
+    responsive: true,
+
+    ajax: {
+
+      url: `${BASE_URL}data_booking_detail`,
+
+      type: "post",
+        data: (obj) => {
+          obj.date_start= $("#date_start").val(),
+          obj.date_end= $("#date_end").val()
+        }
+
+    },
+
+    pageLength: 10,
+
+    columnDefs: [
+
+      {
+
+        targets: [0, 13],
+
+        className: "text-center",
+
+        searchable: false,
+
+      },
+
+      {
+
+        targets: [8],
+
+        className: "text-right",
+
+        render: function (data, type, row) {
+
+          return nf.format(data);
+
+        },
+
+      },
+
+    ],
+
+    lengthMenu: [
+
+      [10, 25, 50, 100, -1],
+
+      [10, 25, 50, 100, "All"],
+
+    ],
+
+    dom: "Bfrtip",
+
+    buttons: ["csv", "excel", "pageLength"],
+
+    pageLength: 10
+
+  });
+
+$('#date_start').change(function() {
+  data_table.ajax.reload();
+});
+
+$('#date_end').change(function() {
+  data_table.ajax.reload();
+});
+
+
+
+</script>
+
+{% endblock %}
