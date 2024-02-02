@@ -30,7 +30,7 @@ class Booking extends CI_Controller
 
 	public function get_produk()
 	{
-		$result = $this->Main_model->get_all('produk', 'desc');
+		$result = $this->Main_model->get_all('produk', 'desc', '30');
 		$data = [];
 		$idx = 0;
 		foreach ($result as $v) {

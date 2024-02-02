@@ -17,13 +17,17 @@ class Main_model extends CI_Model
 
 
 
-	public function get_all($table, $opt = '')
+	public function get_all($table, $opt = '', $limit = '')
 
 	{
 
 		if ($opt == 'desc') {
 			$this->db->order_by('created_at', 'DESC');
 		}
+		if ($limit != '') {
+			$this->db->limit((int)$limit);
+		}
+
 		return $this->db->get($table)->result();
 	}
 
