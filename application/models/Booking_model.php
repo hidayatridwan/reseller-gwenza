@@ -247,7 +247,7 @@ class Booking_model extends CI_Model
 
 		$this->db->trans_start();
 
-/*
+		/*
 		// update stok
 
 		$booking_detail = $this->Main_model->get_where('booking_detail', 'kode', $params->kode)->result();
@@ -334,5 +334,25 @@ join booking as t2 on t1.kode=t2.kode
 where 1=1
 $where
 order by t2.created_at asc;");
+	}
+
+	public function produk_in_stock()
+	{
+		return $this->db->query("SELECT
+			*
+		FROM
+			gwenza.produk
+		WHERE
+			kode IN (SELECT
+					kode
+				FROM
+					produk_stok
+				WHERE
+					size_m > 0 OR size_l > 0 OR size_xl > 0
+						OR size_xxl > 0
+						OR size_xxxl > 0
+						OR size_all > 0
+						OR size_all_l > 0)
+		ORDER BY created_at DESC;")->result();
 	}
 }
