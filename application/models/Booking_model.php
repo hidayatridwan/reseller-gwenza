@@ -341,7 +341,7 @@ order by t2.created_at asc;");
 		return $this->db->query("SELECT
 			*
 		FROM
-			gwenza.produk
+			produk
 		WHERE
 			kode IN (SELECT
 					kode
